@@ -6,7 +6,7 @@
 #include "LEDs.hpp"
 
 LEDs::LEDs() {
-    numLEDs = 162;
+    numLEDs = NUM_TOTAL_LEDs;
     
     for (int i = 0; i < numLEDs; i++) {
         LED led;
@@ -77,24 +77,28 @@ void LEDs::setOceanFbo(ofFbo& oceanFbo) {
     }
 }
 
-void LEDs::packGhostUdp(int whichGhost, u_int8_t data[]) {
-    int ledOffset = 81 * whichGhost;
-    int led = 0;
-    for (int i = 0; i < 81; i++) {
-        ofColor c = leds[i + ledOffset].ledColor;
+void LEDs::packTeensyUdp(int whichTeensy, u_int8_t data[]) {
+    // offset for which Teensy we're sending to
+    int ledTeensyOffset = NUM_TEENSY_LEDs * whichTeensy;
+    
+    // offset for parity bytes
+    int led = 2;
+    
+    for (int i = 0; i < NUM_TEENSY_LEDs; i++) {
+        ofColor c = leds[i + ledTeensyOffset].ledColor;
         
-        data[2 + led] = c.r;
+        data[led] = c.r;
         led++;
-        data[2 + led] = c.g;
+        data[led] = c.g;
         led++;
-        data[2 + led] = c.b;
+        data[led] = c.b;
         led++;
     }
 }
 
 void LEDs::sendUdp() {
-    packGhostUdp(0, data1);
-    packGhostUdp(1, data2);
+    packTeensyUdp(0, data1);
+    packTeensyUdp(1, data2);
     // packGhostUdp(2, data3);
 
     udpConnection1.Send((const char*)data1, sizeof(data1));

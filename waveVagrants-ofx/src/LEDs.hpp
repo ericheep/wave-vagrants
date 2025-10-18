@@ -12,6 +12,9 @@
 #include "ofxOsc.h"
 #include "ofxNetwork.h"
 
+#define NUM_TEENSY_LEDs 81
+#define NUM_TOTAL_LEDs 162
+
 class LEDs {
 public:
     LEDs();
@@ -24,7 +27,7 @@ public:
     void setSize(float width, float height);
     void setOceanFbo(ofFbo& oceanFbo);
     void analyzeSubscreen();
-    void packGhostUdp(int whichGhost, u_int8_t data[]);
+    void packTeensyUdp(int whichTeensy, u_int8_t data[]);
     
     float systemWidth, systemHeight;
     float width, height;
