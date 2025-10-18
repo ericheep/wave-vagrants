@@ -62,7 +62,7 @@ void LEDs::setSize(float _width, float _height) {
     
     for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         // from center
-        float x = startingPoint.x + width / NUM_TOTAL_LEDs * i + LEDSpacing;
+        float x = startingPoint.x + width / NUM_TOTAL_LEDs * i + LEDSpacing / 2.0;
         float y = startingPoint.y;
 
         leds[i].set(x, y, LEDSpacing, LEDSpacing);
