@@ -6,9 +6,7 @@
 #include "LEDs.hpp"
 
 LEDs::LEDs() {
-    numLEDs = NUM_TOTAL_LEDs;
-    
-    for (int i = 0; i < numLEDs; i++) {
+    for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         LED led;
         leds.push_back(led);
     }
@@ -25,6 +23,7 @@ LEDs::LEDs() {
     //udpConnection3.Connect("10.52.120.12", 8888);
     //udpConnection3.SetNonBlocking(true);
     
+    // set check bytes
     data1[0] = 127;
     data1[1] = 127;
     data2[0] = 127;
@@ -34,7 +33,7 @@ LEDs::LEDs() {
 }
 
 void LEDs::update() {
-    for (int i = 0; i < numLEDs; i++) {
+    for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         leds[i].update();
     }
     
@@ -42,7 +41,7 @@ void LEDs::update() {
 }
 
 void LEDs::draw() {
-    for (int i = 0; i < numLEDs; i++) {
+    for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         leds[i].draw();
     }
 }
@@ -56,14 +55,14 @@ void LEDs::setSize(float _width, float _height) {
     width = _width;
     height = _height;
     
-    LEDSpacing = width / numLEDs;
+    LEDSpacing = width / NUM_TOTAL_LEDs;
 
     ofVec2f center = ofVec2f(systemWidth / 2.0, systemHeight / 2.0);
     ofVec2f startingPoint = ofVec2f(center.x - width / 2.0, center.y + 100);
     
-    for (int i = 0; i < numLEDs; i++) {
+    for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         // from center
-        float x = startingPoint.x + width / numLEDs * i + LEDSpacing;
+        float x = startingPoint.x + width / NUM_TOTAL_LEDs * i + LEDSpacing;
         float y = startingPoint.y;
 
         leds[i].set(x, y, LEDSpacing, LEDSpacing);
@@ -72,7 +71,7 @@ void LEDs::setSize(float _width, float _height) {
 }
 
 void LEDs::setOceanFbo(ofFbo& oceanFbo) {
-    for (int i = 0; i < numLEDs; i++) {
+    for (int i = 0; i < NUM_TOTAL_LEDs; i++) {
         leds[i].setOceanFbo(oceanFbo);
     }
 }
@@ -81,7 +80,7 @@ void LEDs::packTeensyUdp(int whichTeensy, u_int8_t data[]) {
     // offset for which Teensy we're sending to
     int ledTeensyOffset = NUM_TEENSY_LEDs * whichTeensy;
     
-    // offset for parity bytes
+    // offset for check bytes
     int led = 2;
     
     for (int i = 0; i < NUM_TEENSY_LEDs; i++) {

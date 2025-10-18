@@ -14,6 +14,7 @@
 
 #define NUM_TEENSY_LEDs 81
 #define NUM_TOTAL_LEDs 162
+#define UDP_BUFFER_SIZE 245
 
 class LEDs {
 public:
@@ -32,16 +33,12 @@ public:
     float systemWidth, systemHeight;
     float width, height;
     float LEDSpacing;
-    int numLEDs;
     
     vector <LED> leds;
-    ofxOscSender oscSender1;
-    ofxOscSender oscSender2;
-    ofxOscSender oscSender3;
     
-    u_int8_t data1[245];
-    u_int8_t data2[245];
-    u_int8_t data3[245];
+    u_int8_t data1[UDP_BUFFER_SIZE];
+    u_int8_t data2[UDP_BUFFER_SIZE];
+    u_int8_t data3[UDP_BUFFER_SIZE];
     
     ofxUDPManager udpConnection1;
     ofxUDPManager udpConnection2;
